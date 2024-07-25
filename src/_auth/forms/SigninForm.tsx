@@ -15,18 +15,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { SigninValidation } from "@/lib/validation";
-import Loader from "@/components/shared/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
 import { useSignInAccount } from "@/lib/react-query/queriesAndMutations";
-import { useUserContext } from "@/context/AuthContext";
+import Loader from "@/components/shared/Loader";
 
 const SigninForm = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { checkAuthUser, isLoading: isUserLoading } = useUserContext(); // Added logout
-
-  const { mutateAsync: signInAccount } = useSignInAccount();
+  const { mutateAsync: signInUser, isPending: isSigning } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SigninValidation>>({
     resolver: zodResolver(SigninValidation),
@@ -39,21 +36,9 @@ const SigninForm = () => {
   // 2: Defin submit handler
   async function onSubmit(values: z.infer<typeof SigninValidation>) {
     // Ensure no active session exists before sign-in
-
-    const session = await signInAccount({
-      email: values.email,
-      password: values.password,
-    });
-    if (!session) {
-      return toast({ title: "SignIn failed. Please try again" });
-    }
-    const isLoggedIn = await checkAuthUser();
-    if (isLoggedIn) {
-      form.reset();
-      navigate("/");
-    } else {
-      toast({ title: "Sign up failed. Please try again." });
-    }
+    const user = await signInUser(values);
+    if (user) return navigate("/");
+    return toast({ title: "User Not Found!" });
   }
 
   return (
@@ -62,8 +47,9 @@ const SigninForm = () => {
         <img src="/assets/images/logo.svg" alt="logo" />
         <h2 className="h3-bold md:h2-bold sm:-pt-1">Login to Your account</h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          Welcome back to<span className="text-lime-400 mx-0.5">mymoment,</span>{" "}
-          Please enter your detail..
+          Welcome back to
+          <span className="text-lime-400 mx-0.5">car-insta,</span> Please enter
+          your detail..
         </p>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -95,13 +81,17 @@ const SigninForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary mt-2">
-            {isUserLoading ? (
-              <div className="flex-center gap-2">
-                <Loader /> Loading ...
+          <Button
+            type="submit"
+            className="px-6 py-3 my-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          >
+            {isSigning ? (
+              <div className="flex gap-2">
+                <Loader />
+                Signing ...
               </div>
             ) : (
-              "Sign Up"
+              "Login"
             )}
           </Button>
           <p className="text-small-regular text-light-2 text-center mt-2">
@@ -110,7 +100,7 @@ const SigninForm = () => {
               to="/sign-up"
               className="text-primary-500 text-small-semibold ml-1"
             >
-              Signup
+              Sign Up
             </Link>
           </p>
           <button
