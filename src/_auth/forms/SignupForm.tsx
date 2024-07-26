@@ -17,20 +17,13 @@ import { Button } from "@/components/ui/button";
 import { SignupValidation } from "@/lib/validation";
 import { Link, useNavigate } from "react-router-dom";
 import { useToast } from "@/components/ui/use-toast";
-import {
-  useCreateUserAccount,
-  useSignInAccount,
-} from "@/lib/react-query/queriesAndMutations";
-import { useUserContext } from "@/context/AuthContext";
+import { useCreateUserAccount } from "@/lib/react-query/queriesAndMutations";
 import Loader from "../../components/shared/Loader";
 
 const SignupForm = () => {
-  const navigate = useNavigate();
   const { toast } = useToast();
-  const { checkAuthUser } = useUserContext(); // Added logout
   const { mutateAsync: createUserAccount, isPending: isCreatingUser } =
     useCreateUserAccount();
-  const { mutateAsync: signInAccount } = useSignInAccount();
 
   const form = useForm<z.infer<typeof SignupValidation>>({
     resolver: zodResolver(SignupValidation),
@@ -41,29 +34,15 @@ const SignupForm = () => {
       password: "",
     },
   });
+  const navigate = useNavigate();
 
   async function onSubmit(values: z.infer<typeof SignupValidation>) {
     const newUser = await createUserAccount(values);
+
     if (!newUser) {
       return toast({ title: "Signup failed. Please try again" });
     }
-
-    // Ensure no active session exists before sign-in
-
-    const session = await signInAccount({
-      email: values.email,
-      password: values.password,
-    });
-    if (!session) {
-      return toast({ title: "SignIn failed. Please try again" });
-    }
-    const isLoggedIn = await checkAuthUser();
-    if (isLoggedIn) {
-      form.reset();
-      navigate("/");
-    } else {
-      toast({ title: "Sign up failed. Please try again." });
-    }
+    navigate("/");
   }
 
   return (
@@ -72,7 +51,7 @@ const SignupForm = () => {
         <img src="/assets/images/logo.svg" alt="logo" />
         <h2 className="h3-bold md:h2-bold sm:-pt-1">Create a new account</h2>
         <p className="text-light-3 small-medium md:base-regular mt-2">
-          To use <span className="text-lime-400">mymoment</span> ,Please enter
+          To use <span className="text-lime-400">car-insta</span> ,Please enter
           your detail..
         </p>
         <form
@@ -131,10 +110,13 @@ const SignupForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="shad-button_primary mt-2">
+          <Button
+            type="submit"
+            className="px-6 py-3 my-2 bg-blue-500 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-opacity-75"
+          >
             {isCreatingUser ? (
               <div className="flex-center gap-2">
-                <Loader /> Loading ...
+                <Loader /> Singing ...
               </div>
             ) : (
               "Sign Up"
