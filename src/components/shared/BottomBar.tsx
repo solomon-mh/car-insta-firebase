@@ -4,7 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 const BottomBar = () => {
   const { pathname } = useLocation();
   return (
-    <section className='bottom-bar'>
+    <section className="bottom-bar flex justify-around">
       {bottombarLinks.map((link) => {
         const isActive = pathname === link.route;
         return (
@@ -24,7 +24,7 @@ const BottomBar = () => {
                 isActive && "invert-white"
               }`}
             />
-            <p className='tiny-medium text-light-2'>{link.label}</p>
+            <p className="tiny-medium text-light-2">{link.label}</p>
           </Link>
         );
       })}
