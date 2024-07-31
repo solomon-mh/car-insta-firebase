@@ -1,90 +1,56 @@
 import { useState } from "react";
-import { Models } from "appwrite";
 import { Link } from "react-router-dom";
-import { formatDateString } from "../../lib/utils";
-import { useUserContext } from "@/context/AuthContext";
-import PostStats from "./PostStats";
+import { PostProps } from "@/types";
 
-type PostCardProps = {
-  post: Models.Document;
-};
-
-const PostCard = ({ post }: PostCardProps) => {
-  console.log(post);
-  const { user } = useUserContext();
+const PostCard = ({ post }: { post: PostProps }) => {
   const [imageError, setImageError] = useState(false);
 
-  if (!post.creator) return null;
-
-  // Convert tags string to array if necessary
-  let tags = post.tags;
-  if (typeof tags === "string") {
-    tags = tags.split(",").map((tag) => tag.trim());
-  }
-
   return (
-    <div className='post-card'>
-      <div className='flex-between'>
-        <div className='flex items-center gap-3'>
-          <Link to={`/profile/${post.creator.$id}`}>
-            <img
-              src={
-                post?.creator?.imageUrl ||
-                "/assets/icons/profile-placeholder.svg"
-              }
-              alt='creator'
-              className='rounded-full w-12 lg:h-12'
-            />
-          </Link>
-          <div className='flex flex-col'>
-            <p className='base-medium lg:body-bold text-light-1'>
-              {post.creator.name}
-            </p>
-            <div className='flex-center gap-2 text-light-3'>
-              <p className='subtle-semibold lg:small-regular'>
-                {formatDateString(post.$createdAt)}
-              </p>
-              -
-              <p className='subtle-semibold lg:small-regular'>
-                {post.location}
-              </p>
-            </div>
-          </div>
-        </div>
-        <Link
-          to={`/update-post/${post.$id}`}
-          className={`${user.id !== post.creator.$id && "hidden"}`}
-        >
-          <img src='/assets/icons/edit.svg' alt='edit' width={20} height={20} />
+    <div className="post-card bg-white shadow-lg rounded-lg overflow-hidden">
+      <div className="flex items-center p-4">
+        <Link to={`/profile/${post.$id}`}>
+          <img
+            src={post?.imageUrl || "/assets/icons/profile-placeholder.svg"}
+            alt="Profile"
+            className="rounded-full w-12 h-12 object-cover"
+          />
         </Link>
+        <div className="ml-4">
+          <p className="text-gray-900 font-semibold">{post.carModel}</p>
+          <p className="text-gray-600">{post.location}</p>
+        </div>
       </div>
       <Link to={`/posts/${post.$id}`}>
-        <div className='small-medium lg:base-medium py-5'>
-          <p>{post.caption}</p>
-          <ul className='flex gap-1 mt-2'>
-            {Array.isArray(tags)
-              ? tags.map((tag: string) => (
-                  <li key={crypto.randomUUID()} className='text-light-3'>
-                    #{tag}
-                  </li>
-                ))
-              : ""}
-          </ul>
+        <div className="p-4">
+          <p className="text-gray-800 mb-2">{post.caption}</p>
+          <p className="text-gray-600 mb-2">Make: {post.carMake}</p>
+          <p className="text-gray-600 mb-2">Year: {post.carYear}</p>
+          <p className="text-gray-600 mb-2">Price: ${post.carPrice}</p>
+          <p className="text-gray-600 mb-2">Mileage: {post.carMileage} miles</p>
+          {/* <div className="flex flex-wrap gap-2 mt-2">
+            {post.tags.split(",").map((tag, index) => (
+              <span
+                key={index}
+                className="text-sm bg-gray-200 rounded-full px-2 py-1"
+              >
+                #{tag}
+              </span>
+            ))}
+          </div> */}
         </div>
         {!imageError && post.imageUrl ? (
           <img
             src={post.imageUrl}
-            alt='post image'
-            className='post-card_img'
+            alt="Car"
+            className="w-full h-64 object-cover"
             onError={() => setImageError(true)}
           />
         ) : (
-          <p className='text-red py-6 px-12 mx-auto my-4 w-fit border border-gray-600 font-semibold rounded-lg flex-center font-mono'>
-            Sorry, the image coudn&apos;t be loaded 😢
+          <p className="text-red-500 text-center py-6 px-12 mx-auto my-4 w-fit border border-gray-600 font-semibold rounded-lg flex-center font-mono">
+            Sorry, the image couldn't be loaded 😢
           </p>
         )}
       </Link>
-      <PostStats post={post} userId={user.id} />
     </div>
   );
 };
