@@ -55,55 +55,37 @@ Car-Insta/
 └── ...
 ```
 
-Installation
-Clone the Repository
+## Installation
 
-sh
-Copy code
+### Clone the Repository
+
+```sh
 git clone https://github.com/your-username/car-insta.git
 cd car-insta
-Install Dependencies
+```
 
-sh
-Copy code
-npm install
-Set Up Firebase
+## Contributing
 
-Go to Firebase Console, create a new project.
-Set up authentication (Email/Password).
-Obtain Firebase configuration and set it in your environment variables.
-Start the Development Server
-
-sh
-Copy code
-npm start
-Usage
-Sign Up/Login: Users can sign up or log in using email and password.
-Create Posts: Upload car images, add captions, tags, and other details.
-View Posts: Browse through the feed to view car posts from different users.
-Profile Management: Users can view and manage their profile and posts.
-Contributing
 Contributions are welcome! Please follow these steps to contribute:
 
-Fork the repository.
-Create a new branch (git checkout -b feature-branch).
-Make your changes.
-Commit your changes (git commit -m 'Add new feature').
-Push to the branch (git push origin feature-branch).
-Open a pull request.
-License
-This project is licensed under the MIT License. See the LICENSE file for details.
+1. Fork the repository.
+2. Create a new branch:
+   ```sh
+   git checkout -b feature-branch
+   ```
+3. Make your changes.
+4. Commit your changes:
+   ```sh
+   git commit -m 'Add new feature'
+   ```
+5. Push to the branch:
+   ```sh
+   git push origin feature-branch
+   ```
+6. Open a pull request.
 
-Acknowledgements
-React: A JavaScript library for building user interfaces.
-Tailwind CSS: A utility-first CSS framework for rapid UI development.
-Firebase: Backend-as-a-Service by Google.
-Shadcn: A lightweight component library.
-react-hook-form: Performant, flexible and extensible forms with easy-to-use validation.
-Zod: TypeScript-first schema declaration and validation library.
-Lottie-react: Lottie animations in React applications.
-@tanstack/react-query: Powerful asynchronous state management for React.
-Contact
-For any inquiries, please contact [your-email@example.com].
+---
 
 Happy Coding! 🚗💨
+
+---
