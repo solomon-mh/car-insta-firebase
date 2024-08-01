@@ -1,32 +1,28 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { INewUser, PostProps } from "@/types";
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
-  useInfiniteQuery,
-} from "@tanstack/react-query";
-import {
-  createUserAccount,
-  signInAccount,
-  signOutAccount,
   createPost,
-} from "../appwrite/api";
-import { INewPost, INewUser } from "@/types";
+  createUser,
+  getRecentPosts,
+  signIn,
+  signOutUser,
+} from "../firebase/api";
+import { QUERY_KEYS } from "./queryKeys";
 
 export const useCreateUserAccount = () => {
   return useMutation({
-    mutationFn: (user: INewUser) => createUserAccount(user),
+    mutationFn: (user: INewUser) => createUser({ userData: user }),
   });
 };
 export const useSignInAccount = () => {
   return useMutation({
-    mutationFn: (user: { email: string; password: string }) =>
-      signInAccount(user),
+    mutationFn: (user: { email: string; password: string }) => signIn(user),
   });
 };
 export const useSignOutAccount = () => {
   return useMutation({
-    mutationFn: signOutAccount,
+    mutationFn: signOutUser,
   });
 };
 
@@ -35,11 +31,17 @@ export const useSignOutAccount = () => {
 export const useCreatePost = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (post: INewPost) => createPost(post),
+    mutationFn: (post: PostProps) => createPost(post),
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: ["getRecentPosts"],
+        queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
       });
     },
+  });
+};
+export const useGetRecentPosts = () => {
+  return useQuery({
+    queryKey: [QUERY_KEYS.GET_RECENT_POSTS],
+    queryFn: getRecentPosts,
   });
 };
