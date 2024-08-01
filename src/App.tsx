@@ -14,6 +14,7 @@ import {
   Saved,
 } from "./_root/pages";
 import { Toaster } from "@/components/ui/toaster";
+import PrivateRoute from "./PrivateRoute";
 
 const App = () => {
   return (
@@ -25,15 +26,17 @@ const App = () => {
           <Route path="/sign-in" element={<SigninForm />} />
         </Route>
         {/* private routes */}
-        <Route element={<RootLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/saved" element={<Saved />} />
-          <Route path="/all-users" element={<AllUsers />} />
-          <Route path="/create-post" element={<CreatePost />} />
-          <Route path="/update-post/:id" element={<EditPost />} />
-          <Route path="/post/:id" element={<PostDetails />} />
-          <Route path="/explore" element={<Explore />} />
+        <Route element={<PrivateRoute />}>
+          <Route element={<RootLayout />}>
+            <Route index element={<Home />} />
+            <Route path="/explore" element={<Explore />} />
+            <Route path="/saved" element={<Saved />} />
+            <Route path="/all-users" element={<AllUsers />} />
+            <Route path="/create-post" element={<CreatePost />} />
+            <Route path="/update-post/:id" element={<EditPost />} />
+            <Route path="/post/:id" element={<PostDetails />} />
+            <Route path="/explore" element={<Explore />} />
+          </Route>
         </Route>
       </Routes>
       <Toaster />
