@@ -20,4 +20,10 @@ export const PostValidation = z.object({
   file: z.custom<File[]>(),
   location: z.string().min(2).max(100),
   tags: z.string(),
+  imageUrl: z.string().optional(),
+  carModel: z.string().min(1),
+  carMake: z.string().min(1),
+  carYear: z.string().regex(/^\d{4}$/),
+  carPrice: z.string().transform((value) => Number(value)),
+  carMileage: z.string().transform((value) => Number(value)),
 });
