@@ -54,3 +54,21 @@ export type INewUser = {
   username: string;
   password: string;
 };
+export type PostProps = {
+  map(arg0: (post: PostProps) => void): unknown;
+  $id?: string | null | undefined;
+  caption: string;
+  file: File[];
+  imageUrl?: string;
+  location: string;
+  tags: string;
+  carModel: string;
+  carMake: string;
+  carYear: string;
+  carPrice: number;
+  carMileage: number;
+};
+export type PostFormProps = {
+  post?: PostProps;
+  action: "Create" | "Update";
+};
