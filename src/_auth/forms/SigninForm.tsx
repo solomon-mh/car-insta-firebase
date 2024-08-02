@@ -58,61 +58,67 @@ const SigninForm = () => {
 
   return (
     <Form {...form}>
-      <div className='sm:w-420 my-8 flex-center flex-col'>
-        <img src='/assets/images/logo.svg' alt='logo' />
-        <h2 className='h3-bold md:h2-bold sm:-pt-1'>Login to Your account</h2>
-        <p className='text-light-3 small-medium md:base-regular mt-2'>
-          Welcome back to<span className='text-lime-400 mx-0.5'>mymoment,</span>{" "}
+      <div className="sm:w-420 my-8 flex-center flex-col">
+        <img src="/assets/images/logo.svg" alt="logo" />
+        <h2 className="h3-bold md:h2-bold sm:-pt-1">Login to Your account</h2>
+        <p className="text-light-3 small-medium md:base-regular mt-2">
+          Welcome back to<span className="text-lime-400 mx-0.5">mymoment,</span>{" "}
           Please enter your detail..
         </p>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='flex flex-col gap-1 w-full mt-4'
+          className="flex flex-col gap-1 w-full mt-4"
         >
           <FormField
             control={form.control}
-            name='email'
+            name="email"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input type='email' className='shad-input' {...field} />
+                  <Input type="email" className="shad-input" {...field} />
                 </FormControl>
-                <FormMessage className='text-red text-xs italic leading-tight' />
+                <FormMessage className="text-red text-xs italic leading-tight" />
               </FormItem>
             )}
           />
           <FormField
             control={form.control}
-            name='password'
+            name="password"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input type='password' className='shad-input' {...field} />
+                  <Input type="password" className="shad-input" {...field} />
                 </FormControl>
-                <FormMessage className='text-red text-xs italic leading-tight' />
+                <FormMessage className="text-red text-xs italic leading-tight" />
               </FormItem>
             )}
           />
-          <Button type='submit' className='shad-button_primary mt-2'>
+          <Button type="submit" className="shad-button_primary mt-2">
             {isUserLoading ? (
-              <div className='flex-center gap-2'>
+              <div className="flex-center gap-2">
                 <Loader /> Loading ...
               </div>
             ) : (
               "Sign Up"
             )}
           </Button>
-          <p className='text-small-regular text-light-2 text-center mt-2'>
+          <p className="text-small-regular text-light-2 text-center mt-2">
             Don&apos;t have an account ?
             <Link
-              to='/sign-up'
-              className='text-primary-500 text-small-semibold ml-1'
+              to="/sign-up"
+              className="text-primary-500 text-small-semibold ml-1"
             >
               Signup
             </Link>
           </p>
+          <button
+            type="submit"
+            className="px-6 py-3 bg-green-500 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 focus:ring-opacity-75"
+          >
+            Login as Guest
+          </button>
         </form>
       </div>
     </Form>
